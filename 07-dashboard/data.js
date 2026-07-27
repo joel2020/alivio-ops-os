@@ -19,6 +19,8 @@ window.ALIVIO_DATA = {
     "on_hand": null,
     "tax_set_aside": null,
     "monthly_operating_cost": null,
+    "monthly_software_cost": 320,
+    "_operating_cost_note": "PARTIAL: $320 software only (ChatGPT 20, Claude 200, Higgsfield 100). Missing tax set-aside, recurring contractors, personal draw. Trigger levels stay OFF until the total is known — computing them from 320 would show green at $591 of cash.",
     "projection": []
   },
   "invoices": [

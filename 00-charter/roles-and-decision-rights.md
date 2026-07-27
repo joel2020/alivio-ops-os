@@ -34,6 +34,36 @@ communicated to a client, any project entering RED.
 **Cannot delegate:** money movement, pricing, final sign-off on first delivery to
 a new client.
 
+### Deputy — currently VACANT
+
+Not a job. A **named person who holds Joel's decisions while Joel is away**, with
+written limits. The 90-day goal is "Joel can be off for two weeks"; without this
+role that goal is arithmetically impossible, because every escalation path in
+this OS terminates at Joel.
+
+What dead-ends today if Joel is unreachable:
+
+- A project meets a RED trigger and needs a decision within 1 business day
+- A scope change over $500 needs approval before work can start
+- A client disputes an invoice or asks for a payment plan
+- Chase tiers 3–6 — every message where money is discussed
+
+**Suggested limits when the role is filled** (Joel sets the real ones):
+
+- **May:** approve scope changes up to $2,500 · declare a project RED and choose
+  any option except *stop* · send chase tiers 1–2 · reschedule internal
+  checkpoints · tell a client about a slip
+- **May not:** quote or discount · send chase tier 4+ · stop a project · fire a
+  client · move money · commit to a date beyond the SOW
+
+**Until it is filled, the honest fallback is: RED projects PAUSE during Joel's
+absence rather than being decided.** That is a legitimate choice. What is not
+legitimate is leaving it undefined, because then someone decides without
+authority and nobody knows it happened.
+
+Filling it likely means a trusted contractor holding the PM archetype. It cannot
+be filled by a person who has never seen a red project go well.
+
 ### PM
 
 **Outcomes owned:** on-time delivery, client comms, project health, status
@@ -133,5 +163,9 @@ or knows immediately that it escalates.
 - Assumes the PM archetype is trusted with client communication. If Joel wants to
   keep all client contact, say so — it is a defensible choice, but it makes "Joel
   off for two weeks" impossible and several documents change.
+- **The Deputy role is defined but VACANT** as of 2026-07-27. Every limit
+  suggested for it is a starting point, not Joel's decision. Until someone holds
+  it, "Joel can be off for two weeks" is not achievable and the OS says so
+  rather than implying otherwise.
 - **Past ~8 people:** split PM into Delivery Lead (owns the portfolio) and PM
   (owns one project). Not needed at 4–6 concurrent clients.

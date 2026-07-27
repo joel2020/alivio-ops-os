@@ -1,0 +1,3 @@
+{"ts": "2026-07-27T10:52:23.526011-04:00", "type": "expense", "amount": 20.0, "category": "software", "description": "ChatGPT subscription (monthly)", "date": "2026-07-27", "receipt": false, "project": "", "receipt_required": false}
+{"ts": "2026-07-27T10:52:23.570947-04:00", "type": "expense", "amount": 200.0, "category": "software", "description": "Claude subscription (monthly)", "date": "2026-07-27", "receipt": false, "project": "", "receipt_required": true}
+{"ts": "2026-07-27T10:52:23.615588-04:00", "type": "expense", "amount": 100.0, "category": "software", "description": "Higgsfield subscription (monthly)", "date": "2026-07-27", "receipt": false, "project": "", "receipt_required": true}

@@ -91,10 +91,13 @@ checked against the trigger levels.
 
 ## Assumptions
 
-- **Operating costs are unknown**, so the 8/4/2-week thresholds cannot yet be
-  computed. Joel needs a monthly fixed-cost number — tools, subscriptions,
-  recurring contractor commitments, personal draw — before this document works. **A
-  blocking gap.**
+- **Operating cost is PARTIAL, so the 8/4/2-week thresholds stay switched off.**
+  Known as of 2026-07-27: **$320/month of software** — ChatGPT $20, Claude $200,
+  Higgsfield $100 (recorded in the ledger). Still missing: tax set-aside,
+  recurring contractor commitments, and **personal draw**.
+  Setting the threshold from $320 alone would put "8 weeks of cover" at $591 and
+  show green while Joel was in real trouble — a number that wrong is more
+  dangerous than no number, so the levels stay off until the total is known.
 - The 13-week model is built by `../08-automation/lib/ledger.py projection`.
   It refuses to project at all without recorded balances rather than assuming
   zero, and it dates overdue invoices realistically rather than at their original

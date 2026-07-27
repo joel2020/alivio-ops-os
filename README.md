@@ -182,14 +182,18 @@ still guessing at, ranked by how much damage a wrong guess does.
    (RLTRS at $29,000, a published $5–10K install figure). Quoting from an
    invented floor either loses winnable work or wins unprofitable work, and both
    are invisible until the quarter closes.
-2. **Monthly operating cost** — the last thing keeping cash trigger levels
-   switched off. Without it the 13-week model runs but cannot say whether the
-   low point is safe.
+2. **Monthly operating cost — partial.** $320/month of software is known
+   (ChatGPT $20, Claude $200, Higgsfield $100). Still missing: tax set-aside,
+   recurring contractors, and personal draw. Cash trigger levels stay OFF until
+   the total exists — computing them from $320 would show green at $591 of cash.
 3. **Retainer mechanism** — Alivio does not bill hourly, so a retainer cannot be
    an hour pool. It needs a defined monthly scope, or a capacity commitment with
    an explicit in/out list, or it quietly becomes unlimited requests.
-4. **A deputy for when Joel is away** — undefined, and the 90-day goal depends
-   on it.
+4. **The Deputy is defined but vacant** — a named person holding Joel's
+   decisions while he is away, with written limits. See
+   `00-charter/roles-and-decision-rights.md`. Until it is filled, RED projects
+   pause during an absence rather than being decided, and "Joel can be off for
+   two weeks" is not achievable.
 
 ### Settled 2026-07-27
 
