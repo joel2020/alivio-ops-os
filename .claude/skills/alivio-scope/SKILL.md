@@ -55,17 +55,20 @@ scope problem, not a price problem — reduce scope rather than the number.
 
 Copy `05-templates/sow-template.md` and complete every `[BRACKET]`.
 
-## What you will hit, every time
+## Alivio does not bill hourly
 
-Two gaps make parts of the SOW uncompletable today. **Flag them; do not invent
-values:**
+Every client-facing number is a **fixed price for defined scope** — including
+change orders. Estimate effort in hours internally to cost the work, then quote
+one number and never show the hours.
 
-- **There is no hourly rate.** `[$RATE]/hour` in section 6 and in the change
-  order has no value, which makes the change-order mechanism unusable as
-  written. Joel must set it.
+This raises the stakes on the estimate: there is no hourly true-up, so a short
+quote is unrecoverable. Size generously and keep the 30% buffer.
+
+## What you will hit
+
 - **Pricing floors are inferred**, from RLTRS at $29,000 and a published
   $5–10K install figure. They have not been confirmed. Anything quoted from them
-  carries that risk.
+  carries that risk — say so when you propose a number.
 
 ## Hard rules
 
@@ -74,6 +77,7 @@ values:**
   work.
 - **Two revision rounds.** Always. It appears in seven documents and changing it
   is a coordinated edit, not a per-deal negotiation.
+- **Never quote an hourly rate.** There isn't one, by design.
 - **Never promise a business result** — traffic, ranking, revenue, conversion.
   Alivio promises work, not outcomes it does not control.
 - **No work starts before signature and deposit received.** Both.

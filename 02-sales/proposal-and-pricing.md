@@ -33,6 +33,8 @@ reason.**
    problem — reduce scope rather than the number.
 3. **Price the outcome, not the hours**, where the outcome has a number attached.
    Hours are what it costs Alivio; they are not what it is worth to the client.
+   **Alivio quotes fixed prices only** — hours are an internal costing input and
+   never appear in a client document.
 4. **Quote one number** for fixed scope. A range invites negotiation to the bottom
    of the range.
 5. **Offer at most two options.** One recommended, one smaller. Three options is a
@@ -109,5 +111,7 @@ scheduled follow-up before it is sent.
   invisible until the quarter closes. **Joel must set these before anyone quotes.**
 - The 30% estimation buffer is a standard services heuristic, not Alivio's measured
   overrun. Track actual versus estimated for a quarter and replace it.
-- **No hourly rate is defined anywhere**, which blocks the change-order mechanism in
-  `../01-delivery/scope-change-protocol.md`. Needed.
+- **Alivio does not bill hourly** (Joel, 2026-07-27). Fixed price for defined
+  scope, always, including change orders. The estimation buffer therefore
+  matters more than it would at an hourly shop: a short estimate cannot be
+  recovered on the invoice, so the 30% is protection rather than padding.

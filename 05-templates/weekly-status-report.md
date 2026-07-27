@@ -36,7 +36,7 @@ Ten minutes to write. If it takes longer, it is too long to read.
 >
 > **Timeline:** On track for [DATE] / Moved to [DATE] because [REASON]
 >
-> **Scope changes to date:** [N] changes, [N] hours, [$ charged / no charge]
+> **Scope changes to date:** [N] changes, [$ charged / absorbed at no charge]
 >
 > **Anything else:** [risks, decisions needed, or delete]
 >

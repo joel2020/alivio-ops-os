@@ -77,7 +77,7 @@ consolidated set of feedback delivered at once.
 - Fixing something that does not match this SOW is not a round — that is finishing
   the work
 - A change of direction is a round
-- Round three onward is a change order at [$RATE]/hour
+- Round three onward is a change order, quoted as a fixed price before any work starts
 
 ## 7. Communication
 
@@ -163,7 +163,8 @@ boilerplate, and a contractor who has never met the client could build from it.
 - **40/30/30, Net 7, two rounds, and the 2% late fee all come from
   `../03-finance/invoicing-policy.md` and `../01-delivery/scope-change-protocol.md`.**
   Change them there, not here, or the OS contradicts itself.
-- **`[$RATE]/hour` in section 6 has no value yet** — Alivio's hourly rate is
-  undefined, which makes the change-order mechanism unusable as written. Blocking.
+- **Alivio does not bill hourly** (Joel, 2026-07-27). Every number in this
+  document is a fixed price for defined scope, including change orders. There is
+  no hourly rate to quote and no variable invoice to reconcile.
 - **This template has not been reviewed by a lawyer.** Sections 9, 11, and the
   delay clause are operational drafting, not legal advice.

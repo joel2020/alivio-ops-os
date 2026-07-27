@@ -45,7 +45,10 @@ is being removed; this is additive scope."]
 | Delivery date | [DATE] | [DATE] |
 | Total value | [$] | [$] |
 
-**Effort:** [N] hours at [$RATE]/hour = **[$AMOUNT]**
+**Price: [$AMOUNT]** — fixed, for the scope defined above.
+
+Alivio does not bill hourly. This is a fixed price for a defined piece of work,
+on the same basis as the original SOW.
 
 **Revision rounds:** two rounds apply to this change, as with all deliverables.
 
@@ -82,8 +85,8 @@ All other terms of the original SOW dated [DATE] remain in force.
 A change order arriving without warning reads as opportunism. Say it out loud
 first:
 
-> "That's a good idea and it's outside what we scoped. It's about [N] hours, so
-> [$AMOUNT], and it'd move delivery to [DATE]. Want me to write it up?"
+> "That's a good idea and it's outside what we scoped. It'd be [$AMOUNT] and
+> move delivery to [DATE]. Want me to write it up?"
 
 Named clearly, with a price and a date, most clients say yes. The ones who say no
 have saved everyone a misunderstanding.
@@ -109,8 +112,8 @@ Signed before work starts, invoiced on signature, logged against the project.
 
 ## Assumptions
 
-- **`[$RATE]/hour` has no value yet.** Alivio's hourly rate is undefined, which
-  makes this template unusable as written. Blocking, and the same gap as in the SOW
-  template.
-- Assumes changes are priced hourly. Some are better priced as a mini fixed-scope;
-  either is fine as long as the document states which.
+- **Alivio does not bill hourly** (Joel, 2026-07-27), so a change order is a
+  mini fixed-scope quote. Estimate the effort internally, add the same buffer the
+  main pricing uses, and quote one number.
+- A fixed price on a change order means a short estimate cannot be recovered
+  later. Size generously — the client is agreeing to a number, not to a meter.
