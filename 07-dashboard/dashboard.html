@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alivio Studios — Operating Picture</title>
+
+<!-- Chart.js is the ONE external dependency, permitted by the Phase 2 brief.
+     If it fails to load (offline, blocked), the cash projection renders as a
+     table instead and the page says so. Nothing else here needs the network. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0C1116; --panel:#131C24; --panel2:#0F1720; --rule:#1F2E3A;
+    --ink:#DCE6EE; --dim:#7189A0; --dimmer:#4B5F70;
+    --ok:#4FD1A5; --warn:#FFB454; --bad:#FF5C57; --accent:#5AA9FF;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:1.25rem 1rem 4rem}
+
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;
+    padding-bottom:.75rem;border-bottom:1px solid var(--rule);margin-bottom:1.25rem}
+  header h1{font-size:1.05rem;margin:0;font-weight:600;letter-spacing:.01em}
+  header .meta{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--dim)}
+  header .meta.stale{color:var(--warn)}
+
+  section{margin-bottom:1.6rem}
+  .sec-head{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.55rem}
+  .sec-head h2{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;
+    margin:0;font-weight:600;color:var(--dim)}
+  .sec-head .count{font-family:var(--mono);font-size:.72rem;color:var(--dimmer)}
+  .sec-head .note{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--dim)}
+  section.alarm .sec-head h2, section.alarm .sec-head .note{color:var(--bad)}
+
+  .card{background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+    padding:.6rem .75rem;margin-bottom:.45rem}
+  .card.bad{border-left:3px solid var(--bad)}
+  .card.warn{border-left:3px solid var(--warn)}
+  .card.ok{border-left:3px solid var(--ok)}
+  .card-top{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+  .card-title{font-weight:600}
+  .card-body{color:var(--dim);font-size:.82rem;margin-top:.15rem}
+  .money{margin-left:auto;font-family:var(--mono);font-weight:600}
+  .money.bad{color:var(--bad)} .money.warn{color:var(--warn)}
+
+  .tag{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;
+    letter-spacing:.06em;padding:.1rem .4rem;border-radius:3px;
+    border:1px solid var(--rule);color:var(--dim);white-space:nowrap}
+  .tag.bad{color:var(--bad);border-color:var(--bad)}
+  .tag.warn{color:var(--warn);border-color:var(--warn)}
+  .tag.ok{color:var(--ok);border-color:var(--ok)}
+
+  table{width:100%;border-collapse:collapse;font-size:.82rem}
+  th{text-align:left;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;
+    letter-spacing:.07em;color:var(--dimmer);font-weight:500;
+    padding:.35rem .5rem;border-bottom:1px solid var(--rule);cursor:pointer;
+    user-select:none;white-space:nowrap}
+  th:hover{color:var(--dim)}
+  th .arrow{opacity:.5;font-size:.6rem}
+  td{padding:.45rem .5rem;border-bottom:1px solid var(--panel2);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);text-align:right;white-space:nowrap}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;
+    background:var(--panel);border:1px solid var(--rule);border-radius:6px}
+
+  .grid{display:grid;gap:.45rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .stat{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:.6rem .7rem}
+  .stat .k{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;
+    letter-spacing:.07em;color:var(--dimmer)}
+  .stat .v{font-family:var(--mono);font-size:1.15rem;font-weight:600;margin-top:.15rem}
+  .stat .v.bad{color:var(--bad)} .stat .v.warn{color:var(--warn)} .stat .v.ok{color:var(--ok)}
+  .stat .v.unset{color:var(--dimmer);font-size:.82rem;font-weight:400}
+  .stat .sub{font-size:.7rem;color:var(--dim);margin-top:.1rem}
+
+  .filters{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.5rem}
+  .filters button{background:var(--panel2);border:1px solid var(--rule);color:var(--dim);
+    font-family:var(--mono);font-size:.68rem;padding:.22rem .55rem;border-radius:3px;
+    cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+  .filters button:hover{color:var(--ink)}
+  .filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#06121F}
+
+  .empty,.unset-msg{color:var(--dim);font-size:.82rem;padding:.6rem .75rem;
+    background:var(--panel2);border:1px dashed var(--rule);border-radius:6px}
+  .unset-msg b{color:var(--warn)}
+  .chart-wrap{background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+    padding:.7rem;height:220px}
+  .prov{font-family:var(--mono);font-size:.64rem;color:var(--dimmer);margin-top:.3rem}
+  a{color:var(--accent)}
+  footer{margin-top:2rem;padding-top:.8rem;border-top:1px solid var(--rule);
+    font-size:.72rem;color:var(--dimmer);font-family:var(--mono)}
+
+  @media (max-width:640px){
+    .wrap{padding:.85rem .7rem 3rem}
+    header .meta{margin-left:0;width:100%}
+    .sec-head .note{margin-left:0;width:100%}
+    .money{margin-left:0}
+    .chart-wrap{height:180px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Alivio Studios</h1>
+    <span class="tag">operating picture</span>
+    <span class="meta" id="meta"></span>
+  </header>
+  <div id="app"></div>
+  <footer id="footer"></footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   RULES — mirrored from the written OS. This block is the contract between
+   Phase 1 and Phase 2. Nothing below invents a threshold; if a number here
+   disagrees with the markdown, the markdown wins and this is a bug.
+   ═══════════════════════════════════════════════════════════════════════ */
+const RULES = {
+
+  // 01-delivery/project-lifecycle.md
+  stages: ["Scoped","Kickoff","Build","QA","Client review","Delivered","Closed"],
+  dwellDays: {                     // max business-ish days in stage
+    "Scoped": 5, "Kickoff": 5, "QA": 3, "Client review": 7, "Delivered": 10
+  },
+  buildFractionOfDuration: 0.60,   // Build may consume 60% of total duration
+  amber: { blockerDaysMin: 2, blockerDaysMax: 5, milestoneWithinDays: 3,
+           budgetConsumed: 0.80, deliveredBelow: 0.60, missedCheckpoints: 1 },
+  red:   { milestoneSlipDays: 5, blockerDays: 7, missedCheckpoints: 2,
+           invoiceOverdueDays: 30 },
+
+  // 02-sales/pipeline-stages.md
+  pipelineWeights: { "New":0.05, "Qualified":0.15, "Discovery":0.30,
+                     "Proposal":0.50, "Verbal":0.80 },
+  pipelineDwell:   { "New":5, "Qualified":10, "Discovery":10,
+                     "Proposal":15, "Verbal":15 },
+  untouchedDays: 5,                // 02-sales/crm-hygiene.md
+
+  // 02-sales/forecast-method.md
+  coverage: { target: 3, alarm: 2 },
+
+  // 03-finance/ar-chase-sequence.md
+  chaseTiers: [
+    { day:1,  tier:1, who:"PM",   label:"friendly reminder" },
+    { day:7,  tier:2, who:"PM",   label:"firm, Joel cc'd" },
+    { day:14, tier:3, who:"Joel", label:"Joel direct + payment plan offer" },
+    { day:21, tier:4, who:"Joel", label:"stop-work notice" },
+    { day:30, tier:5, who:"Joel", label:"work stops, late fee applies" },
+    { day:45, tier:6, who:"Joel", label:"DECISION: collections / write-off" }
+  ],
+  arBuckets: [ {label:"Current",max:0}, {label:"1–30",max:30},
+               {label:"31–60",max:60}, {label:"60+",max:Infinity} ],
+
+  // 03-finance/cash-flow-review.md — weeks of operating cost at the low point
+  cashLevels: [
+    { min:8,  key:"comfortable", cls:"ok",   text:"Comfortable" },
+    { min:4,  key:"watch",       cls:"warn", text:"Watch — AR chase becomes top priority" },
+    { min:2,  key:"act",         cls:"bad",  text:"Act — chase everything, defer spend" },
+    { min:-Infinity, key:"critical", cls:"bad", text:"CRITICAL — stop discretionary spend" }
+  ],
+
+  staleDataDays: 3
+};
+
+/* ── helpers ───────────────────────────────────────────────────────────── */
+const $ = (h) => { const t=document.createElement('template'); t.innerHTML=h.trim();
+                   return t.content.firstChild; };
+const esc = (s) => String(s==null?'':s).replace(/[&<>"']/g,
+  c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TODAY = new Date(new Date().toISOString().slice(0,10)+"T00:00:00");
+const d = (s) => s ? new Date(s+"T00:00:00") : null;
+const daysBetween = (a,b) => Math.round((b-a)/86400000);
+const since = (s) => s ? daysBetween(d(s), TODAY) : null;
+const until = (s) => s ? daysBetween(TODAY, d(s)) : null;
+const money = (n) => n==null ? "—" : "$"+Math.round(n).toLocaleString();
+const isNum = (n) => typeof n === "number" && isFinite(n);
+
+/* Persistence.
+ *
+ * Opening this file directly makes the page an OPAQUE ORIGIN, and reading
+ * localStorage from one THROWS rather than returning null. Unguarded, that
+ * exception killed rendering partway down the page — the projects table came
+ * back empty and the pipeline and this-week sections never rendered at all.
+ *
+ * Every access goes through here. When storage is unavailable the page still
+ * works; the filter and sort just reset on reload, which is a far better
+ * failure than half a dashboard. Declared up here, not beside the functions
+ * that use it, because render() runs before the bottom of this script and a
+ * `const` referenced before its declaration throws.
+ */
+const store = {
+  get(k){ try { return window.localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { window.localStorage.setItem(k,v); } catch(e){ /* opaque origin */ } },
+  get available(){ try { window.localStorage.length; return true; } catch(e){ return false; } }
+};
+
+/* ── health, computed from RULES (never authored in data) ──────────────── */
+function projectHealth(p){
+  const reasons = { red:[], amber:[] };
+  const inStage = since(p.stage_since);
+  const blocked = since(p.blocker_since);
+  const toMilestone = p.next_milestone ? until(p.next_milestone.date) : null;
+
+  // RED
+  if (toMilestone != null && toMilestone < -RULES.red.milestoneSlipDays)
+    reasons.red.push(`milestone slipped ${-toMilestone}d`);
+  if (blocked != null && blocked > RULES.red.blockerDays)
+    reasons.red.push(`blocked ${blocked}d`);
+  if ((p.missed_checkpoints||0) >= RULES.red.missedCheckpoints)
+    reasons.red.push(`${p.missed_checkpoints} missed checkpoints`);
+  if (p.scope_disputed) reasons.red.push("scope disputed");
+
+  // AMBER
+  const limit = stageLimit(p);
+  if (limit != null && inStage != null && inStage > limit)
+    reasons.amber.push(`${inStage}d in ${p.stage} (limit ${limit})`);
+  if (toMilestone != null && toMilestone >= 0 && toMilestone <= RULES.amber.milestoneWithinDays)
+    reasons.amber.push(`milestone in ${toMilestone}d`);
+  if (blocked != null && blocked >= RULES.amber.blockerDaysMin && blocked <= RULES.amber.blockerDaysMax)
+    reasons.amber.push(`blocked ${blocked}d`);
+  if (isNum(p.budget_consumed) && isNum(p.delivered) &&
+      p.budget_consumed > RULES.amber.budgetConsumed && p.delivered < RULES.amber.deliveredBelow)
+    reasons.amber.push(`${Math.round(p.budget_consumed*100)}% budget, ${Math.round(p.delivered*100)}% delivered`);
+  if ((p.missed_checkpoints||0) === RULES.amber.missedCheckpoints)
+    reasons.amber.push("1 missed checkpoint");
+
+  if (reasons.red.length)   return { level:"red",   cls:"bad",  reasons:reasons.red };
+  if (reasons.amber.length) return { level:"amber", cls:"warn", reasons:reasons.amber };
+  return { level:"green", cls:"ok", reasons:[] };
+}
+
+function stageLimit(p){
+  if (RULES.dwellDays[p.stage] != null) return RULES.dwellDays[p.stage];
+  if (p.stage === "Build" && p.started && p.target_delivery){
+    const total = daysBetween(d(p.started), d(p.target_delivery));
+    if (total > 0) return Math.round(total * RULES.buildFractionOfDuration);
+  }
+  return null;                       // Closed, or not enough data to judge
+}
+
+function chaseTier(inv){
+  const over = -until(inv.due_date);
+  if (inv.paid || over < 1) return null;
+  let t = null;
+  for (const tier of RULES.chaseTiers) if (over >= tier.day) t = tier;
+  return t ? { ...t, overdue: over } : null;
+}
+
+/* ── boot: prefer data.json over HTTP, fall back to data.js ────────────── */
+(async function boot(){
+  let data = window.ALIVIO_DATA, source = "data.js";
+  if (location.protocol.startsWith("http")){
+    try {
+      const r = await fetch("data.json", {cache:"no-store"});
+      if (r.ok){ data = await r.json(); source = "data.json"; }
+    } catch(e){ /* stay on data.js — expected offline and on file:// */ }
+  }
+  if (!data){
+    document.getElementById('app').appendChild($(
+      `<div class="unset-msg"><b>No data loaded.</b> data.js is missing or has a
+       syntax error. Open the browser console — it names the line.</div>`));
+    return;
+  }
+  try { render(data, source); }
+  catch(err){
+    document.getElementById('app').appendChild($(
+      `<div class="unset-msg"><b>Render failed.</b> ${esc(err.message)}</div>`));
+    throw err;
+  }
+})();
+
+/* ── render ────────────────────────────────────────────────────────────── */
+function render(D, source){
+  const app = document.getElementById('app');
+  const age = since(D.updated);
+  const stale = age != null && age > RULES.staleDataDays;
+  document.getElementById('meta').className = "meta" + (stale ? " stale" : "");
+  document.getElementById('meta').textContent =
+    `data ${D.updated || "undated"}${age!=null ? ` · ${age}d old` : ""}` +
+    `${stale ? " · STALE" : ""} · ${source}`;
+
+  const attention = [];   // collected as we go, rendered first
+
+  /* ---- cash figures ---- */
+  const inv = (D.invoices||[]).filter(i=>!i.paid);
+  const arTotal = inv.reduce((s,i)=>s+(i.amount||0),0);
+  const overdue = inv.map(i=>({i,t:chaseTier(i)})).filter(x=>x.t);
+  const over30 = overdue.filter(x=>x.t.overdue>30);
+  const over45 = overdue.filter(x=>x.t.overdue>45);
+
+  /* Ranking. 0 and 1 are process failures — AR past 45 means the chase sequence
+     never ran, past 30 means it ran late. Everything else that carries money
+     shares rank 2 with red projects, so the secondary sort by amount decides:
+     $10,000 overdue outranks a red project with nothing attached. */
+  overdue.forEach(({i,t})=>{
+    attention.push({
+      rank: t.overdue>45?0 : t.overdue>30?1 : 2,
+      cls:  t.overdue>30?"bad":"warn",
+      tag:  `tier ${t.tier} · ${t.overdue}d overdue`,
+      title:`${i.client} — invoice ${i.number}`,
+      body: `${t.label}. Owed by ${t.who}.` + (i.disputed?" DISPUTED — sequence paused.":""),
+      amount: i.amount,
+      prov: `03-finance/ar-chase-sequence.md · due ${i.due_date}`
+    });
+  });
+
+  /* ---- projects ---- */
+  const projects = (D.projects||[]).map(p=>{
+    const h = projectHealth(p);
+    const projOverdue = overdue.some(x=>x.i.project===p.name && x.t.overdue>RULES.red.invoiceOverdueDays);
+    if (projOverdue){ h.level="red"; h.cls="bad"; h.reasons=[...h.reasons,"invoice >30d overdue"]; }
+    return {...p, health:h, inStage:since(p.stage_since), limit:stageLimit(p)};
+  });
+  projects.filter(p=>p.health.level==="red").forEach(p=>{
+    attention.push({ rank:2, cls:"bad", tag:"project red", title:p.name,
+      body:p.health.reasons.join(" · "), amount:null,
+      prov:"01-delivery/project-red-escalation.md" });
+  });
+
+  /* ---- pipeline ---- */
+  const deals = (D.pipeline||[]).map(x=>({
+    ...x,
+    weight: RULES.pipelineWeights[x.stage] ?? 0,
+    weighted: (x.value||0) * (RULES.pipelineWeights[x.stage] ?? 0),
+    inStage: since(x.stage_since),
+    untouched: since(x.last_touch)
+  }));
+  deals.filter(x=>!x.next_step).forEach(x=>{
+    attention.push({ rank:4, cls:"warn", tag:"no next step", title:`${x.company} — ${x.stage}`,
+      body:"A deal without a next step is not being worked. Add one or mark Lost.",
+      amount:null, prov:"02-sales/crm-hygiene.md" });
+  });
+
+  /* ═══ 1 · ATTENTION REQUIRED ═══ */
+  attention.sort((a,b)=>a.rank-b.rank || (b.amount||0)-(a.amount||0));
+  const sAtt = section(app,"attention","Attention required",attention.length,
+    attention.length?"ranked — worst first":"");
+  if (attention.length) sAtt.parentElement.classList.add("alarm");
+  if (!attention.length) sAtt.appendChild($(`<div class="empty">Nothing red. Everything below is within its rule.</div>`));
+  attention.forEach(a=>{
+    sAtt.appendChild($(`<div class="card ${a.cls}"><div class="card-top">
+      <span class="tag ${a.cls}">${esc(a.tag)}</span>
+      <span class="card-title">${esc(a.title)}</span>
+      ${a.amount!=null?`<span class="money ${a.cls}">${money(a.amount)}</span>`:''}</div>
+      <div class="card-body">${esc(a.body)}</div>
+      <div class="prov">${esc(a.prov)}</div></div>`));
+  });
+
+  /* ═══ 2 · CASH ═══ */
+  const c = D.cash || {};
+  const sCash = section(app,"cash","Cash",null,"");
+  const proj = c.projection||[];
+  let low=null, running=isNum(c.on_hand)?c.on_hand:null;
+  const series=[];
+  if (running!=null){
+    proj.forEach(w=>{ running = running + (w.in||0) - (w.out||0);
+      series.push({week:w.week, bal:running});
+      if (low==null || running<low) low=running; });
+  }
+  const weeksCover = (low!=null && isNum(c.monthly_operating_cost) && c.monthly_operating_cost>0)
+    ? low / (c.monthly_operating_cost/4.33) : null;
+  const level = weeksCover!=null
+    ? RULES.cashLevels.find(l=>weeksCover>=l.min) : null;
+
+  const stats = $(`<div class="grid"></div>`);
+  stats.appendChild(stat("Cash on hand", isNum(c.on_hand)?money(c.on_hand):null,
+    isNum(c.on_hand)?"":"set cash.on_hand in data.js"));
+  stats.appendChild(stat("13-week low point", low!=null?money(low):null,
+    low!=null?"":"needs cash.on_hand + projection"));
+  stats.appendChild(stat("Weeks of cover", weeksCover!=null?weeksCover.toFixed(1)+"w":null,
+    weeksCover!=null?(level?level.text:""):"needs monthly_operating_cost",
+    level?level.cls:null));
+  stats.appendChild(stat("AR outstanding", money(arTotal),
+    `${inv.length} unpaid · ${overdue.length} overdue`, overdue.length?"warn":null));
+  stats.appendChild(stat("AR over 30 days", money(over30.reduce((s,x)=>s+x.i.amount,0)),
+    over30.length?"chase sequence is late":"target $0", over30.length?"bad":"ok"));
+  stats.appendChild(stat("AR over 45 days", money(over45.reduce((s,x)=>s+x.i.amount,0)),
+    over45.length?"sequence never ran":"target $0", over45.length?"bad":"ok"));
+  sCash.appendChild(stats);
+
+  if (!isNum(c.monthly_operating_cost))
+    sCash.appendChild($(`<div class="unset-msg" style="margin-top:.45rem">
+      <b>Cash trigger levels are off.</b> They need
+      <code>cash.monthly_operating_cost</code> in data.js. Until it is set, the
+      page will not guess a level — see 03-finance/cash-flow-review.md.</div>`));
+
+  // AR aging buckets
+  if (inv.length){
+    const buckets = RULES.arBuckets.map(b=>({label:b.label,max:b.max,total:0,n:0}));
+    inv.forEach(i=>{
+      const over = -until(i.due_date);
+      const b = over<1 ? buckets[0] : buckets.find(x=>over<=x.max) || buckets[buckets.length-1];
+      b.total += i.amount||0; b.n++;
+    });
+    const g = $(`<div class="grid" style="margin-top:.45rem"></div>`);
+    buckets.forEach(b=>{
+      const cls = b.total===0 ? null : b.label==="Current" ? "ok" : b.label==="1–30" ? "warn" : "bad";
+      g.appendChild(stat("AR "+b.label, money(b.total), `${b.n} invoice${b.n===1?'':'s'}`, cls));
+    });
+    sCash.appendChild(g);
+  }
+
+  // 13-week chart, or a table if Chart.js did not load
+  if (series.length){
+    const wrap = $(`<div class="chart-wrap" style="margin-top:.45rem"></div>`);
+    sCash.appendChild(wrap);
+    if (window.Chart){
+      const cv = $(`<canvas></canvas>`); wrap.appendChild(cv);
+      new Chart(cv,{ type:"line",
+        data:{ labels:series.map(s=>s.week.slice(5)),
+               datasets:[{ data:series.map(s=>s.bal), borderColor:"#5AA9FF",
+                 backgroundColor:"rgba(90,169,255,.12)", fill:true, tension:.25,
+                 pointRadius:2, borderWidth:2 }]},
+        options:{ responsive:true, maintainAspectRatio:false,
+          plugins:{legend:{display:false}},
+          scales:{ x:{ticks:{color:"#4B5F70",font:{size:10}},grid:{color:"#1F2E3A"}},
+                   y:{ticks:{color:"#4B5F70",font:{size:10},
+                        callback:v=>"$"+(v/1000).toFixed(0)+"k"},
+                      grid:{color:"#1F2E3A"}}}}});
+    } else {
+      wrap.style.height="auto";
+      wrap.appendChild($(`<div class="card-body">Chart.js did not load — showing the
+        numbers instead.</div>`));
+      wrap.appendChild(table(["Week","Balance"],
+        series.map(s=>[s.week, {num:money(s.bal)}])));
+    }
+  }
+
+  /* ═══ 3 · ACTIVE PROJECTS ═══ */
+  const active = projects.filter(p=>p.stage!=="Closed");
+  const sProj = section(app,"projects","Active projects",active.length,"");
+  if (!active.length) sProj.appendChild($(`<div class="empty">No active projects in data.js.</div>`));
+  else {
+    sProj.appendChild(filters("proj",["all","red","amber","green"], v=>{
+      sProj.querySelectorAll("tbody tr").forEach(tr=>{
+        tr.style.display = (v==="all"||tr.dataset.health===v) ? "" : "none"; });
+    }));
+    const rows = active.map(p=>({
+      _health:p.health.level,
+      cells:[
+        esc(p.client),
+        esc(p.stage),
+        esc(p.owner||"—"),
+        p.next_milestone ? `${esc(p.next_milestone.name)}<br><span class="prov">${esc(p.next_milestone.date)}</span>` : "—",
+        {num: p.inStage!=null ? `${p.inStage}d${p.limit?` / ${p.limit}`:""}` : "—",
+         cls: (p.limit && p.inStage>p.limit) ? "bad" : ""},
+        `<span class="tag ${p.health.cls}">${p.health.level}</span>` +
+          (p.health.reasons.length?`<div class="prov">${esc(p.health.reasons.join(" · "))}</div>`:"")
+      ]}));
+    sProj.appendChild(table(
+      ["Client","Stage","Owner","Next milestone","In stage","Health"], rows, "proj"));
+    sProj.appendChild($(`<div class="prov">Health computed from 01-delivery/project-lifecycle.md — not authored in data.js</div>`));
+  }
+
+  /* ═══ 4 · PIPELINE ═══ */
+  const sPipe = section(app,"pipeline","Pipeline",deals.length,"");
+  if (!deals.length){
+    sPipe.appendChild($(`<div class="empty">Pipeline is empty in data.js. That is
+      a real answer only if it is true — an empty pipeline is itself the finding.
+      See 02-sales/forecast-method.md.</div>`));
+  } else {
+    const weighted = deals.reduce((s,x)=>s+x.weighted,0);
+    const cover = isNum(D.revenue_target_90d) && D.revenue_target_90d>0
+      ? weighted/D.revenue_target_90d : null;
+    const g = $(`<div class="grid"></div>`);
+    g.appendChild(stat("Open deals", String(deals.length)));
+    g.appendChild(stat("Raw value", money(deals.reduce((s,x)=>s+(x.value||0),0))));
+    g.appendChild(stat("Weighted", money(weighted)));
+    g.appendChild(stat("Coverage", cover!=null?cover.toFixed(1)+"×":null,
+      cover!=null ? (cover>=RULES.coverage.target?"healthy":"below 3× target")
+                  : "needs revenue_target_90d",
+      cover==null?null:cover<RULES.coverage.alarm?"bad":cover<RULES.coverage.target?"warn":"ok"));
+    sPipe.appendChild(g);
+
+    const rows = deals.map(x=>{
+      const stale = x.inStage!=null && x.inStage > (RULES.pipelineDwell[x.stage]??99);
+      const cold  = x.untouched!=null && x.untouched > RULES.untouchedDays;
+      return { _health: stale||cold ? "amber":"green", cells:[
+        esc(x.company),
+        esc(x.stage),
+        {num: money(x.value)},
+        {num: money(x.weighted)},
+        {num: x.inStage!=null?`${x.inStage}d`:"—", cls: stale?"bad":""},
+        {num: x.untouched!=null?`${x.untouched}d`:"—", cls: cold?"bad":""},
+        x.next_step ? esc(x.next_step) : `<span class="tag bad">none</span>`
+      ]};
+    });
+    sPipe.appendChild(table(
+      ["Company","Stage","Value","Weighted","In stage","Untouched","Next step"], rows, "pipe"));
+    sPipe.appendChild($(`<div class="prov">Weights fixed in 02-sales/pipeline-stages.md and never adjusted per deal</div>`));
+  }
+
+  /* ═══ 5 · THIS WEEK ═══ */
+  const open = (D.commitments||[]).filter(c=>!c.done);
+  const sWeek = section(app,"week","This week",open.length,"");
+  if (!open.length) sWeek.appendChild($(`<div class="empty">Nothing outstanding.</div>`));
+  open.sort((a,b)=>(a.due||"").localeCompare(b.due||"")).forEach(c=>{
+    const u = until(c.due);
+    const cls = u==null?"":u<0?"bad":u<=1?"warn":"";
+    sWeek.appendChild($(`<div class="card ${cls}"><div class="card-top">
+      <span class="tag ${cls}">${u==null?"no date":u<0?`${-u}d late`:u===0?"today":`${u}d`}</span>
+      <span class="card-title">${esc(c.what)}</span>
+      <span class="prov" style="margin-left:auto">${esc(c.owner||"")}</span></div></div>`));
+  });
+
+  /* ---- footer ---- */
+  document.getElementById('footer').innerHTML =
+    `Rules read from the written OS · projects: 01-delivery/project-lifecycle.md · ` +
+    `pipeline: 02-sales/pipeline-stages.md · AR: 03-finance/ar-chase-sequence.md · ` +
+    `cash: 03-finance/cash-flow-review.md` +
+    (store.available ? "" :
+      `<br>Filter and sort will not persist — this browser blocks storage for ` +
+      `files opened directly. Serve the folder over http to keep them.`);
+}
+
+/* ── small builders ────────────────────────────────────────────────────── */
+function section(parent,id,title,count,note){
+  const s=$(`<section id="sec-${id}"><div class="sec-head">
+    <h2>${esc(title)}</h2>
+    ${count!=null?`<span class="count">${count}</span>`:''}
+    ${note?`<span class="note">${esc(note)}</span>`:''}</div>
+    <div class="body"></div></section>`);
+  parent.appendChild(s);
+  return s.querySelector('.body');
+}
+
+function stat(k,v,sub,cls){
+  const unset = v==null;
+  return $(`<div class="stat"><div class="k">${esc(k)}</div>
+    <div class="v ${unset?'unset':(cls||'')}">${unset?'not set':esc(v)}</div>
+    ${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>`);
+}
+
+/* Sortable table. Sort choice persists per table id. */
+function table(headers, rows, persistKey){
+  const wrap=$(`<div class="scroll"><table><thead><tr></tr></thead><tbody></tbody></table></div>`);
+  const trh=wrap.querySelector('thead tr'), tb=wrap.querySelector('tbody');
+  const draw=(sortIdx,dir)=>{
+    tb.innerHTML="";
+    const r=[...rows];
+    if (sortIdx!=null) r.sort((a,b)=>{
+      const va=cellText(a.cells[sortIdx]), vb=cellText(b.cells[sortIdx]);
+      const na=parseFloat(va.replace(/[^0-9.-]/g,'')), nb=parseFloat(vb.replace(/[^0-9.-]/g,''));
+      const cmp = (!isNaN(na)&&!isNaN(nb)) ? na-nb : va.localeCompare(vb);
+      return dir==="asc"?cmp:-cmp;
+    });
+    r.forEach(row=>{
+      const tr=document.createElement('tr');
+      if (row._health) tr.dataset.health=row._health;
+      row.cells.forEach(c=>{
+        const td=document.createElement('td');
+        if (typeof c==="object"){ td.className="num "+(c.cls||""); td.innerHTML=c.num; }
+        else td.innerHTML=c;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  };
+  let cur = persistKey ? loadSort(persistKey) : null;
+  headers.forEach((h,i)=>{
+    const th=document.createElement('th');
+    th.innerHTML=esc(h)+' <span class="arrow"></span>';
+    th.onclick=()=>{
+      const dir = (cur && cur.i===i && cur.dir==="asc") ? "desc" : "asc";
+      cur={i,dir}; if(persistKey) saveSort(persistKey,cur);
+      marks(); draw(i,dir);
+    };
+    trh.appendChild(th);
+  });
+  const marks=()=>{ [...trh.children].forEach((th,i)=>{
+    th.querySelector('.arrow').textContent =
+      cur && cur.i===i ? (cur.dir==="asc"?"▲":"▼") : ""; }); };
+  marks();
+  draw(cur?cur.i:null, cur?cur.dir:null);
+  return wrap;
+}
+function cellText(c){ const h = typeof c==="object"?c.num:c;
+  const t=document.createElement('div'); t.innerHTML=h; return (t.textContent||"").trim(); }
+
+/* Filter buttons. Choice persists across reloads where storage allows. */
+function filters(key, opts, onChange){
+  const wrap=$(`<div class="filters"></div>`);
+  const saved = store.get("alivio.filter."+key) || opts[0];
+  opts.forEach(o=>{
+    const b=$(`<button aria-pressed="${o===saved}">${esc(o)}</button>`);
+    b.onclick=()=>{
+      store.set("alivio.filter."+key,o);
+      [...wrap.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+      onChange(o);
+    };
+    wrap.appendChild(b);
+  });
+  setTimeout(()=>onChange(saved),0);
+  return wrap;
+}
+function saveSort(k,v){ store.set("alivio.sort."+k,JSON.stringify(v)); }
+function loadSort(k){ try{ return JSON.parse(store.get("alivio.sort."+k)); }catch(e){ return null; } }
+</script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 The documented system that runs the agency without depending on any one person's
 memory.
 
-**Status:** Phase 1 complete — 41 documents plus this index. Phases 2 (dashboard)
-and 3 (automation) not yet built.
+**Status:** Phase 1 complete (41 documents) · Phase 2 complete (dashboard) ·
+Phase 3 (automation) not yet built.
 
 **Last reviewed:** 2026-07-26
 
@@ -90,6 +90,15 @@ The layer everything else defers to.
 ### 06 — Metrics
 - [Scorecard](06-metrics/scorecard.md) — the 11 numbers
 - [Definitions](06-metrics/definitions.md) — exactly how each is calculated
+
+### 07 — Dashboard *(Phase 2)*
+- [Dashboard README](07-dashboard/README.md) — how to use it, what it computes
+- `07-dashboard/dashboard.html` — open it directly, no server needed
+- `07-dashboard/data.js` — the only file you edit
+
+Health colours, chase tiers, weighted pipeline, and cash trigger levels are all
+**computed from the documents above**. The dashboard reads the definitions; it
+does not hold its own.
 
 ---
 
