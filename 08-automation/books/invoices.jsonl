@@ -1,0 +1,2 @@
+{"ts": "2026-07-26T23:17:35.648452-04:00", "type": "invoice", "number": "ALI-2026-018", "client": "RLTRS", "project": "RLTRS — Colombia real estate suite", "amount": 10000.0, "issued": "2026-07-01", "due": "2026-07-08", "note": "Week 1 milestone ALI-28", "disputed": false, "void": false}
+{"ts": "2026-07-26T23:17:35.689969-04:00", "type": "invoice", "number": "ALI-2026-019", "client": "RLTRS", "project": "RLTRS — Colombia real estate suite", "amount": 2000.0, "issued": "2026-07-08", "due": "2026-07-15", "note": "Week 2 milestone ALI-32", "disputed": false, "void": false}
