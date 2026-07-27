@@ -183,12 +183,12 @@ See the handover note for full reasoning. In short:
 1. **Pricing** — every floor and band is inferred from two observed data points
 2. **Payment structure** — 40/30/30 vs the weekly-draw shape actually used on RLTRS
 3. **Monthly operating cost** — without it, cash trigger levels cannot be computed
-4. **Revenue target** — without it, pipeline coverage cannot be computed
-5. **Retainer mechanism** — Alivio does not bill hourly, so a retainer cannot be
+4. **Retainer mechanism** — Alivio does not bill hourly, so a retainer cannot be
    an hour pool. It needs a defined monthly scope or a capacity commitment with
    an explicit in/out list, or it quietly becomes unlimited requests.
-6. **A deputy for when Joel is away** — undefined, and the 90-day goal depends on it
+5. **A deputy for when Joel is away** — undefined, and the 90-day goal depends on it
 
-**Settled 2026-07-27:** Alivio does not bill hourly. Every client-facing number
+**Settled 2026-07-27:** revenue target is **$100,000/year → $25,000 per 90 days**,
+so 3× coverage means $75,000 weighted pipeline. Alivio does not bill hourly. Every client-facing number
 is a fixed price for defined scope, including change orders. An accounting tool
 now exists — see `08-automation/lib/ledger.py`.

@@ -33,7 +33,7 @@ is running late; over 45 days means it never ran at all — the observed failure
 | # | Metric | Owner | Cadence | Target | Alarm |
 |---|---|---|---|---|---|
 | 5 | **Weighted pipeline** | Joel | Weekly | — | Falling 3 weeks running |
-| 6 | **Pipeline coverage** | Joel | Weekly | > 3× | < 2× |
+| 6 | **Pipeline coverage** | Joel | Weekly | > 3× of $25K/90d | < 2× |
 | 7 | **Win rate** | Joel | Monthly | — | Falling trend over a quarter |
 
 ### Delivery — the ones that predict pipeline
@@ -101,6 +101,8 @@ cadence.
   be replaced with values grounded in what Alivio actually does.
 - **Metric 2 cannot be computed until Joel provides a monthly operating cost
   figure.** Blocking.
-- **Metric 6 cannot be computed until Joel sets a revenue target.** Blocking.
+- **Metric 6 is live as of 2026-07-27:** $100,000/year → $25,000 per 90 days,
+  so 3× coverage means $75,000 weighted pipeline. See the capacity-vs-target
+  tension noted in `../02-sales/forecast-method.md`.
 - Assumes 11 metrics is maintainable for a solo operator. If it is not, cut to
   metrics 2, 3, 6, 8, and 11 — those five cover the business.

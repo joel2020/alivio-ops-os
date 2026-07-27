@@ -10,11 +10,11 @@
  * EVERYTHING ELSE IS YOURS. projects, pipeline, and commitments are hand-
  * maintained and preserved across regeneration. Nothing here knows them.
  *
- * Generated 2026-07-26
+ * Generated 2026-07-27
  */
 
 window.ALIVIO_DATA = {
-  "updated": "2026-07-26",
+  "updated": "2026-07-27",
   "cash": {
     "on_hand": null,
     "tax_set_aside": null,
@@ -120,7 +120,7 @@ window.ALIVIO_DATA = {
     }
   ],
   "pipeline": [],
-  "revenue_target_90d": null,
+  "revenue_target_90d": 25000,
   "commitments": [
     {
       "what": "Weekly status report — RLTRS",

@@ -62,6 +62,9 @@ Excludes retainer renewals — those are recurring revenue, tracked separately.
 ### 6. Pipeline coverage
 **Weighted pipeline ÷ revenue target for the next 90 days.**
 
+Revenue target is **$100,000/year → $25,000 per 90 days** (set 2026-07-27), so
+3× coverage means **$75,000 of weighted pipeline**.
+
 Target 3×, alarm below 2×. Assumes roughly a 30% close rate.
 
 ### 7. Win rate
@@ -107,7 +110,7 @@ the cause is upstream in discovery.
 close.
 
 - Revenue includes change orders
-- Direct contractor cost is only hours billed to this project
+- Direct contractor cost is only contractor payments and expenses booked to this project
 - **Excludes Joel's own time** — Alivio has no internal cost rate for Joel, so
   including it would require inventing one
 - Excludes overhead and tools
@@ -144,11 +147,13 @@ computing it independently get the same number.
 
 ## Assumptions
 
-- **Metrics 2 and 6 cannot be computed today**: metric 2 needs a monthly operating
-  cost figure and metric 6 needs a revenue target. Neither exists. Blocking, and
-  they are the two most important numbers in the scorecard.
+- **Metric 6 is computable as of 2026-07-27** ($25,000 per 90 days). **Metric 2
+  still is not** — it needs a monthly operating cost figure, without which the
+  cash trigger levels stay switched off rather than guessed.
 - **Metric 11 excluding Joel's time is a deliberate simplification.** Once Joel sets
   a notional internal rate, this should be revisited — it currently flatters every
   project Joel worked on personally.
-- Assumes these can be computed from Linear plus an accounting tool. **No accounting
-  tool is named in the stack**, so metrics 1–4 and 11 are manual today.
+- Metrics 1–4 and 11 are computed from the ledger
+  (`../08-automation/lib/ledger.py`), built 2026-07-26. They are only as current
+  as what Joel has recorded — the ledger cannot observe a bank account, and it
+  reports "no balances recorded" rather than assuming zero.

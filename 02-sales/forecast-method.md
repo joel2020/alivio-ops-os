@@ -32,7 +32,10 @@ to mark one "90% because I can feel it" is exactly what makes forecasts useless.
 
 **Coverage = weighted pipeline ÷ revenue target for the period.**
 
-Target: **3× coverage** on a rolling 90 days.
+**Revenue target: $100,000 for the year** (Joel, 2026-07-27) — **$25,000 per
+rolling 90 days**.
+
+Target: **3× coverage**, so the pipeline needs **$75,000 weighted** at any time.
 
 Why 3×: at a roughly 30% close rate — which the stage weights imply — three
 dollars of weighted pipeline are needed for every dollar of revenue. Below 3× the
@@ -93,9 +96,17 @@ note whenever coverage falls below 3×.
 
 ## Assumptions
 
-- **No revenue target has been set**, which makes coverage uncomputable. This is a
-  blocking gap — Joel needs a monthly or quarterly revenue number before this
-  document does anything.
+- **Revenue target set 2026-07-27: $100,000/year, $25,000 per 90 days.** Coverage
+  is now computable. The $75,000 weighted-pipeline figure follows from the 3×
+  target.
+- **The target and the stated capacity do not agree, and that is worth
+  resolving.** 4–6 concurrent clients on 4–8 week engagements implies roughly
+  25–35 engagements a year; at the $8,000 web floor that would be $200K+. Either
+  the concurrency figure counts small and dormant work, or $100K is a
+  deliberately conservative floor, or the price bands are set too high for the
+  volume actually being run. Whichever it is, it changes what "healthy" means on
+  this page — a business tracking to $100K does not need 4–6 concurrent clients,
+  and one running 4–6 should not be at $100K.
 - The 3× target assumes a ~30% close rate. Alivio's actual rate is unknown; after
   ~20 closed deals, replace both the weights and the target with measured values.
 - Assumes the pipeline is large enough for weighting to be meaningful. At 4–6
