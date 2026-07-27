@@ -140,6 +140,31 @@ def _overdue_project_names(today=None):
             and i.get("project")}
 
 
+def orphaned_invoices(today=None):
+    """Invoices whose `project` matches no project on the board.
+
+    Invoices link to projects by exact string match, so a typo in either place
+    silently detaches money from the project it belongs to — the invoice stops
+    contributing to that project's health, and the >30-day RED trigger never
+    fires for it. Nothing else would ever notice, which is why this is checked
+    rather than assumed.
+    """
+    board = load_board()
+    if not board["available"]:
+        return {"available": False, "reason": board["reason"], "orphans": []}
+    names = {p.get("name") for p in board["projects"]}
+    orphans = []
+    for i in ledger.invoices():
+        proj = i.get("project")
+        if proj and proj not in names:
+            orphans.append({"number": i["number"], "project": proj,
+                            "outstanding": i["outstanding"],
+                            "fix": "make the invoice's project match a name in "
+                                   "07-dashboard/data.js exactly, or correct the "
+                                   "project name there"})
+    return {"available": True, "reason": None, "orphans": orphans}
+
+
 def projects_with_health(today=None):
     board = load_board()
     od = _overdue_project_names(today)
@@ -176,6 +201,7 @@ def invoice_chase_sweep(today=None):
         "total_overdue": round(sum(r["outstanding"] for r in rows), 2),
         "aging": aging,
         "escalations": [r["number"] for r in rows if r["chase"]["tier"] >= 4],
+        "orphaned_invoices": orphaned_invoices(today),
         "reminder": "Drafts only. Joel reviews and sends. Nothing goes out from here.",
     }
 
@@ -284,7 +310,12 @@ def monday_brief(today=None):
     due.sort(key=lambda c: c.get("due") or "9999")
 
     return {
-        "task": "monday-brief", "as_of": today.isoformat(), "available": True,
+        "task": "monday-brief", "as_of": today.isoformat(),
+        # False when any source failed. A brief that reads "available" while
+        # silently missing projects looks complete, which is worse than a brief
+        # that says it is partial.
+        "available": board["available"],
+        "partial": bool(missing),
         "sources": ["08-automation/books/", "07-dashboard/data.js",
                     "00-charter/cadence-calendar.md"],
         "missing": missing,
@@ -295,10 +326,16 @@ def monday_brief(today=None):
                "over_45": chase["aging"]["over_45"]},
         "pipeline": {"open": pipe["open_deals"], "weighted": pipe["weighted"],
                      "coverage": pipe["coverage"]},
-        "projects": {"red": [p.get("name") for p in projs if p["health"]["level"] == "red"],
+        # Each section carries its own availability. A section that reports
+        # zero red projects when it could not read the file at all is the
+        # single failure this OS is built to avoid — "nothing to do" and "I
+        # couldn't look" must never render the same.
+        "projects": {"available": board["available"], "reason": board["reason"],
+                     "red": [p.get("name") for p in projs if p["health"]["level"] == "red"],
                      "amber": [p.get("name") for p in projs if p["health"]["level"] == "amber"],
                      "total": len(projs)},
-        "commitments": due,
+        "commitments": {"available": board["available"], "reason": board["reason"],
+                        "items": due},
         "proposed_top_3": top[:3],
         "note": "Top 3 are proposed from the numbers. Joel decides.",
     }
@@ -358,6 +395,14 @@ def month_end_prep(today=None):
             gaps.append({"kind": "delivered but not closed",
                          "detail": f"{p.get('name')} — usually an unpaid final invoice",
                          "date": None})
+
+    orph = orphaned_invoices(today)
+    for o in orph["orphans"]:
+        gaps.append({"kind": "invoice not linked to a project",
+                     "detail": f"{o['number']} points at \"{o['project']}\" which "
+                               f"matches no project — ${o['outstanding']:,.2f} is "
+                               f"invisible to that project's health",
+                     "date": None})
 
     if not ledger.cash_position()["available"]:
         gaps.append({"kind": "no balances recorded",

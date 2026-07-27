@@ -18,5 +18,9 @@ owns it, and the draft.
 
 Fill `[NAME]` and `[PROJECT]` from what Joel provides. Never invent a contact.
 
+Check `orphaned_invoices` — an invoice pointing at a project name that does not
+exist means that money is invisible to the project's health and the 30-day RED
+trigger will never fire for it. Report it and name the fix.
+
 **Nothing sends. Joel reviews and sends.** Twice weekly, because a weekly sweep
 lets a tier slip by up to six days and the boundaries are days 1 and 7.

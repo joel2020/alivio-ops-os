@@ -24,8 +24,13 @@ that can end the business quickly:
 4. **Projects** — red first, then amber, with the computed reason.
 5. **Pipeline** — open, weighted, coverage. If `revenue_target_90d` is unset,
    say coverage cannot be computed.
-6. **Commitments due this week.**
+6. **Commitments due this week** — `commitments.items`. If
+   `commitments.available` is false, say the file could not be read rather than
+   reporting an empty week.
 7. **Proposed top 3** — say plainly that these are proposed from the numbers and
    Joel decides.
+
+If `available` is false, **lead with that**. A partial brief is useful; a partial
+brief presented as complete is not.
 
 Cite the sources listed in the output. Never invent a number that came back null.
