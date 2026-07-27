@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 08-automation/lib/ops.py:*)",
+      "Bash(python3 08-automation/lib/ledger.py:*)",
+      "Bash(python3 08-automation/lib/drafts.py:*)",
+      "Bash(python3 08-automation/lib/sync_dashboard.py:*)",
+      "Bash(python3 08-automation/lib/tests/run_all.py:*)",
+      "Bash(python3 lib/ops.py:*)",
+      "Bash(python3 lib/ledger.py:*)",
+      "Bash(python3 lib/drafts.py:*)",
+      "Bash(python3 lib/sync_dashboard.py:*)",
+      "Read"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Bash(git push*)"
+    ]
+  }
+}

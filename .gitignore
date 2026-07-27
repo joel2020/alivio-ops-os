@@ -3,3 +3,4 @@
 # Run logs — churn on every scheduled run, and carry client detail.
 08-automation/runs/
 08-automation/books/export/
+08-automation/runs/
