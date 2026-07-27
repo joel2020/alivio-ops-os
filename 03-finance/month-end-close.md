@@ -82,10 +82,10 @@ delivered project has a computed gross margin.
 
 ## Assumptions
 
-- **No accounting tool is named in Alivio's stack.** Every step here assumes one
-  exists. Until it does, this is a spreadsheet exercise and takes considerably
-  longer than 90 minutes. **Choosing one is the highest-leverage unblock in the
-  finance pillar.**
+- The accounting layer is `../08-automation/lib/ledger.py` (built 2026-07-26) and
+  `/month-end-prep` runs on the 25th. It is an operational ledger, not
+  double-entry bookkeeping — it exports CSV for an accountant rather than
+  replacing one.
 - The $75 receipt threshold is a common default, not a rule Joel has set.
 - Assumes Joel does the close personally. It is the most delegable finance task
   once there is a bookkeeper, and the first one worth delegating.

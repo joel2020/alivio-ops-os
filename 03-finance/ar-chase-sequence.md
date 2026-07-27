@@ -104,6 +104,6 @@ had every tier fire on schedule, or a written reason it did not.
   observed failure was total absence of chasing, not chasing too gently.
 - Assumes Joel is willing to enforce stop-work. **If not, tier 4 should be removed
   rather than bluffed** — an unenforced threat is worse than no threat.
-- Assumes AR data is queryable. **With no accounting tool named in the stack, the
-  sweep is manual until one exists** — the largest practical blocker to automating
-  this in Phase 3.
+- AR data is queryable from `../08-automation/lib/ledger.py`, and the sweep runs
+  Tuesday and Friday via launchd. It is only as complete as the invoices Joel has
+  recorded.

@@ -175,20 +175,40 @@ Five tests. If a document does not move one of these, it should not exist.
 
 ## What still needs Joel
 
-Phase 1 is written but **not yet true**. These are the decisions the OS is
-currently guessing at, ranked by how much damage a wrong guess does.
+Phase 1 is written but **not yet fully true**. These are the decisions the OS is
+still guessing at, ranked by how much damage a wrong guess does.
 
-See the handover note for full reasoning. In short:
-
-1. **Pricing** — every floor and band is inferred from two observed data points
-2. **Payment structure** — 40/30/30 vs the weekly-draw shape actually used on RLTRS
-3. **Monthly operating cost** — without it, cash trigger levels cannot be computed
-4. **Retainer mechanism** — Alivio does not bill hourly, so a retainer cannot be
-   an hour pool. It needs a defined monthly scope or a capacity commitment with
+1. **Pricing floors** — every band is inferred from two observed data points
+   (RLTRS at $29,000, a published $5–10K install figure). Quoting from an
+   invented floor either loses winnable work or wins unprofitable work, and both
+   are invisible until the quarter closes.
+2. **Monthly operating cost** — the last thing keeping cash trigger levels
+   switched off. Without it the 13-week model runs but cannot say whether the
+   low point is safe.
+3. **Retainer mechanism** — Alivio does not bill hourly, so a retainer cannot be
+   an hour pool. It needs a defined monthly scope, or a capacity commitment with
    an explicit in/out list, or it quietly becomes unlimited requests.
-5. **A deputy for when Joel is away** — undefined, and the 90-day goal depends on it
+4. **A deputy for when Joel is away** — undefined, and the 90-day goal depends
+   on it.
 
-**Settled 2026-07-27:** revenue target is **$100,000/year → $25,000 per 90 days**,
-so 3× coverage means $75,000 weighted pipeline. Alivio does not bill hourly. Every client-facing number
-is a fixed price for defined scope, including change orders. An accounting tool
-now exists — see `08-automation/lib/ledger.py`.
+### Settled 2026-07-27
+
+- **Revenue target: $100,000/year → $25,000 per 90 days.** At 3× coverage the
+  pipeline needs $75,000 weighted. Currently $0 — the alarm is firing, correctly.
+- **Every engagement is fixed-price.** No hourly billing anywhere, including
+  change orders. Hours are an internal costing input and never appear in a
+  client document.
+- **40/30/30 is the default payment schedule**, with a custom schedule permitted
+  when written into the SOW. RLTRS runs $4,000 up front plus $500 weekly — a
+  fixed price on a weekly draw, not a different pricing model. The risk that
+  shape carries is documented in `03-finance/invoicing-policy.md`.
+- **The accounting tool exists** — `08-automation/lib/ledger.py`.
+
+### One tension worth resolving
+
+The revenue target and the stated capacity do not agree. 4–6 concurrent clients
+on 4–8 week engagements implies roughly 25–35 engagements a year, which at the
+$8,000 web floor would be $200K+. Either the concurrency figure counts small and
+dormant work, or $100K is deliberately conservative, or the price bands are too
+high for the volume actually being run. It changes what "healthy" means on the
+dashboard, so it is worth settling. See `02-sales/forecast-method.md`.

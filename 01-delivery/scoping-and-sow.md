@@ -98,10 +98,11 @@ to build, what not to build, when it is due, and what "finished" means.
 
 ## Assumptions
 
-- **The 40/30/30 structure is a best-practice guess.** The one observed Alivio
-  engagement (RLTRS) ran $4,000 up front plus $500 weekly, which is a different
-  shape entirely. Joel must decide whether 40/30/30 is the standard and weekly
-  draws are the exception, or the reverse.
+- **Settled 2026-07-27:** 40/30/30 is the default and a custom schedule is the
+  documented exception, written into the SOW. Every engagement is fixed-price
+  regardless of schedule — RLTRS is fixed-price on a weekly draw, not a different
+  pricing model. See `../03-finance/invoicing-policy.md` for the risk a weekly
+  draw carries.
 - Assumes SOWs are signed electronically and the countersigned copy is filed.
   Where it is filed is not yet defined — a gap.
 - **No legal review has happened.** The delay clause and the terms are operational

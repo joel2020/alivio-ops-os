@@ -95,7 +95,9 @@ checked against the trigger levels.
   computed. Joel needs a monthly fixed-cost number — tools, subscriptions,
   recurring contractor commitments, personal draw — before this document works. **A
   blocking gap.**
-- Assumes the 13-week model is maintained in a spreadsheet or the Phase 2
-  dashboard. **No accounting tool is named in the stack**, so it is manual today.
+- The 13-week model is built by `../08-automation/lib/ledger.py projection`.
+  It refuses to project at all without recorded balances rather than assuming
+  zero, and it dates overdue invoices realistically rather than at their original
+  due date.
 - The 8/4/2 thresholds are standard small-business practice, not tuned to Alivio's
   volatility. A business with lumpier revenue needs a bigger buffer.

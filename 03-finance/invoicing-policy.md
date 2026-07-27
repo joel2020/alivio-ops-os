@@ -34,14 +34,44 @@ the deposit received, not merely invoiced.
 
 **These numbers are the source of truth. Any other document that disagrees is wrong.**
 
+**Every engagement is fixed-price.** Alivio does not bill hourly — see
+`../01-delivery/scope-change-protocol.md`. The price is agreed before work starts
+and does not move without a signed change order. What varies is the *schedule*
+the fixed price is drawn down on, not the price.
+
 - **Payment terms: Net 7** from invoice date
 - **Deposit: 40%**, non-refundable once discovery begins
-- **Structure: 40 / 30 / 30** for fixed-scope
+- **Default structure: 40 / 30 / 30** for fixed-scope
+- **A different schedule is allowed when it is written into the SOW.** The total
+  stays fixed; only the timing changes. See the RLTRS example below.
 - **Retainers: monthly in advance**, due on the 1st, 3-month minimum term
 - **Late fee: 2% per month** on balances over 30 days, stated in the SOW —
   unstated, it is unenforceable and merely annoying
 - **Currency:** USD unless the SOW says otherwise
 - **Client pays transfer fees** on international payments
+
+### Custom schedules — the RLTRS pattern
+
+RLTRS runs **$4,000 up front, then $500 every Friday until completion** (agreed
+at the Jul 16 meeting; the transcript is the authoritative record). That is a
+fixed-price engagement on a weekly draw, not a different pricing model.
+
+**The risk this shape carries, named because it is not obvious.** A fixed total
+paid weekly "until completed" means *Alivio absorbs every week of overrun at
+zero marginal revenue*. On 40/30/30 an overrun costs Alivio time; here it costs
+time and delays the remaining draws. The protections are the ones already in the
+OS and they matter more on this shape than on any other:
+
+- The **delay clause** — client-caused delay moves the end date rather than being
+  absorbed
+- The **scope change protocol** — every extra is a change order, priced
+  separately from the weekly draw
+- The **RED trigger at 5 days' milestone slip** — on a weekly-draw engagement,
+  slippage compounds
+
+Before agreeing a weekly draw again, decide the **end date or the cap**. "Until
+we're completed" is only safe when what "completed" means is written down and
+countable, which is what the SOW deliverables list is for.
 
 **Why Net 7 rather than Net 30:** Alivio is a solo operator with a contractor bench
 to pay. Net 30 on a 6-week project means being paid after the work and the
@@ -92,12 +122,12 @@ is logged with its due date.
 
 ## Assumptions
 
-- **40/30/30 and Net 7 are best-practice defaults, not confirmed Alivio policy.**
-  The one observed engagement (RLTRS) used $4,000 up front plus $500 weekly, which
-  is neither. **Joel must confirm** — this number appears in the SOW template, the
-  cash flow model, and the chase sequence, so changing it later changes four files.
+- **Confirmed 2026-07-27:** every engagement is fixed-price. 40/30/30 is the
+  default schedule; a different one is permitted when written into the SOW, and
+  RLTRS is the live example. The price is fixed either way — only the timing of
+  the draw changes.
 - The 2%/month late fee is common practice; enforceability varies by jurisdiction
   and it has not been reviewed by a lawyer.
-- Assumes invoicing happens in an accounting tool that can be queried for AR aging.
-  **No accounting tool was named in the stack** — this is a gap, and until it is
-  filled, AR aging is manual.
+- AR aging is computed by `../08-automation/lib/ledger.py`, built 2026-07-26.
+  It is only as current as what Joel records — the ledger cannot observe a bank
+  account, and it reports "no balances recorded" rather than assuming zero.
