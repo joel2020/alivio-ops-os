@@ -51,8 +51,11 @@ disqualifier that needs strengthening, not bad luck.
 
 ## Where it goes
 
-- **Deal:** a comment on the Linear deal, plus `Company/win-loss-log.md` in Obsidian
-- **Project:** `Clients/[Client]/99-postmortem.md`, linked from the decision log
+- **Deal:** a comment on the Linear issue, plus the win/loss section of
+  `Alivio Operations OS/02 - Decisions Log.md` in Obsidian
+- **Project:** a numbered note in that engagement's Obsidian folder —
+  `NN - Post-mortem (<date>).md` — following the vault's existing convention, and
+  linked from `00 - Index.md`
 
 If it produced a decision worth not relitigating, write it into the decision log
 in the five-line format, including `Revisit if`.
@@ -83,5 +86,6 @@ executes.
 
 - `02-sales/win-loss-capture.md`
 - `04-team/decision-log.md`
+- `04-team/knowledge-base-map.md` — where each kind of note actually lives
 - `01-delivery/delivery-and-handoff.md`
 - `06-metrics/definitions.md` — how margin and revision rounds are computed

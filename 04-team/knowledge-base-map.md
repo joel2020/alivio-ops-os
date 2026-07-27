@@ -19,32 +19,46 @@ and Joel's head — which is the state this OS exists to end.
 | Active work, issues, milestones, stage | **Linear** | PM | Obsidian |
 | Pipeline and deals | **Linear** (pipeline project) | Joel | Spreadsheets |
 | Client knowledge, meeting notes, context | **Obsidian**, per-client folder | PM | Linear |
-| Decisions and reasoning | **Obsidian** decision log | PM | Chat, transcripts alone |
+| Decisions and reasoning | **Obsidian** — `Alivio Operations OS/02 - Decisions Log.md` for company-wide, the engagement folder for client-specific | PM | Chat, transcripts alone |
 | Meeting transcripts | **Granola** | — | — |
 | Code, deploys, environments | **GitHub + Vercel** | Build | — |
 | Credentials | **Password manager** | Joel | Chat, email, code, notes |
 | Client conversations | **Channel of record** per client | PM | Anywhere else |
-| Financial records | **Accounting tool** *(not yet chosen)* | Joel | Spreadsheets |
-| Contractor register, agreements, tax forms | **Joel's records** | Joel | — |
+| Financial records | **The ledger** (`08-automation/lib/ledger.py`) | Joel | Spreadsheets |
+| Contractor register and payments | **The ledger** `contractor` commands | Joel | Spreadsheets |
+| Signed agreements, W-9/W-8BEN | **Joel's records** | Joel | — |
 
 ## The Obsidian structure
 
+**This describes the vault as it actually is**, verified 2026-07-27. An earlier
+draft of this file proposed a different shape — one that had never existed. A map
+that describes an imagined structure is worse than no map, because people follow
+it and create a second convention alongside the first.
+
 ```
 Clients/
-  [Client Name]/
-    00-context.md          who they are, what they care about, how they work
-    01-decisions.md        the decision log for this client
-    02-meetings/           notes, newest first
-    03-deliverables/       what was delivered, when
-    99-postmortem.md       written at Delivered
-Company/
-  decisions.md             company-wide decision log
-  win-loss-log.md          every deal post-mortem
-  contractor-register.md   who, archetype, rate, dates
+  _Client Registry.md        the MOC — every client, repo, Vercel, Supabase, Linear
+  <Client>.md                one dossier per client
+
+<Engagement or Project>/     one folder per body of work
+  00 - Index.md              start here; links the numbered notes
+  01 - ...                   numbered, in reading order
+  NN - Decision Log.md       where the engagement has one
+
+Alivio Operations OS/        the OS itself
+  00 - Index.md
+  01 - What Was Built.md
+  02 - Decisions Log.md
+  03 - Open Decisions.md
+  04 - Operating Numbers.md
 ```
 
-Four files per client. Enough to hold context, few enough that nobody has to decide
-where something goes.
+**Conventions that already exist and should be followed:**
+
+- YAML frontmatter with `type`, `tags`, `updated`
+- Numbered filenames, `NN - Title.md`, in reading order
+- `[[Wikilinks]]`, never bare paths
+- `_`-prefixed files are indexes (MOCs)
 
 ## The rules
 
@@ -62,7 +76,7 @@ where something goes.
 
 With the month-end close:
 
-1. Any client folder missing `00-context.md`?
+1. Any active client missing a dossier in `Clients/`?
 2. Any decisions from this month not logged?
 3. Any OS document whose `Last reviewed` is over a quarter old?
 4. Anything written in two places?
@@ -78,8 +92,8 @@ With the month-end close:
 
 ## Definition of done
 
-Every active client has a folder with context and a decision log, and every
-category in the table has exactly one home.
+Every active client has a dossier in `Clients/`, every engagement with decisions
+has a log, and every category in the table has exactly one home.
 
 ## Related
 
@@ -90,9 +104,14 @@ category in the table has exactly one home.
 
 ## Assumptions
 
+- **The structure above was corrected on 2026-07-27 to match the real vault.**
+  The original draft invented a `Clients/<Name>/00-context.md` layout that did not
+  exist. Anyone following it would have created a second convention alongside the
+  one already in use — which is exactly the "two homes for one fact" failure this
+  document exists to prevent.
 - Assumes Obsidian and Linear stay as-is. Consistent with the stated constraint not
   to propose replacements.
 - **Assumes a password manager exists.** None was named in the stack — if there is
   not one, that is a gap worth closing before the next credential handoff.
-- **Assumes an accounting tool will be chosen.** The table has a row for it with
-  nothing in it, which is honest rather than aspirational.
+- The accounting tool is the ledger, built 2026-07-26. It is operational rather
+  than double-entry and exports CSV for an accountant.
