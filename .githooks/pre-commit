@@ -1,0 +1,29 @@
+#!/bin/bash
+# Integrity gate for the Alivio Operations OS.
+#
+# This repo now runs itself: six launchd agents fire on a schedule, and the
+# dashboard, the ledger, and the Monday brief all read the same thresholds from
+# three different files. A broken commit is not a broken working copy — it is a
+# broken thing that executes unattended, and a drifted threshold means an
+# invoice chased at the wrong tier.
+#
+# Bypass deliberately with: git commit --no-verify
+
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel)" || exit 0
+[ -f 08-automation/lib/tests/run_all.py ] || exit 0
+
+OUT=$(/usr/bin/python3 08-automation/lib/tests/run_all.py 2>&1)
+if [ $? -ne 0 ]; then
+  echo
+  echo "  COMMIT BLOCKED — the OS test suite is failing."
+  echo
+  echo "$OUT" | tail -25
+  echo
+  echo "  Six scheduled agents run against this code. Fix it, or bypass"
+  echo "  deliberately with: git commit --no-verify"
+  echo
+  exit 1
+fi
+echo "  OS tests: $(echo "$OUT" | grep -oE 'Ran [0-9]+ tests') OK"
+exit 0

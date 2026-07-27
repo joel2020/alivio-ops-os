@@ -3,8 +3,9 @@
 The documented system that runs the agency without depending on any one person's
 memory.
 
-**Status:** Phase 1 complete (41 documents) · Phase 2 complete (dashboard) ·
-Phase 3 (automation) not yet built.
+**Status:** All three phases complete and running.
+Phase 1 — 41 documents · Phase 2 — dashboard · Phase 3 — 6 scheduled agents,
+5 skills, and the ledger. 42 tests, integrity-gated on commit.
 
 **Last reviewed:** 2026-07-26
 
@@ -100,6 +101,24 @@ Health colours, chase tiers, weighted pipeline, and cash trigger levels are all
 **computed from the documents above**. The dashboard reads the definitions; it
 does not hold its own.
 
+### 08 — Automation *(Phase 3)*
+- [Automation README](08-automation/README.md) — the ledger, the six tasks, the five skills
+- `08-automation/lib/ledger.py` — the accounting tool: invoices, AR, expenses, contractors, cash
+- `08-automation/scheduler/install.sh --load` — start or stop the six agents
+- `.claude/skills/` — alivio-intake · alivio-scope · alivio-status · alivio-chase · alivio-postmortem
+
+| Task | When |
+|---|---|
+| Monday brief | Mon 07:00 |
+| Invoice chase sweep | Tue + Fri 09:00 |
+| Project status roll-up | Wed 09:00 |
+| Pipeline hygiene | Fri 15:00 |
+| Friday close-out | Fri 16:00 |
+| Month-end prep | 25th 09:00 |
+
+**Nothing sends. No money moves.** Both are enforced by the capability not
+existing — a test greps for a send or payment path and fails if one appears.
+
 ---
 
 ## The numbers that appear in more than one document
@@ -124,11 +143,21 @@ Each has **one** source of truth. Change it there; everything else links.
 
 1. Change it in its **source of truth** file, never in a document that references it
 2. Update every document that restates it — the table above says which
-3. Bump `Last reviewed`
-4. If it is a policy change, log it in the [decision log](04-team/decision-log.md)
-5. Follow the [SOP writing standard](04-team/sop-writing-standard.md)
+3. **If it is a threshold, update all three copies**: the markdown, the `RULES`
+   block in `07-dashboard/dashboard.html`, and the constants in
+   `08-automation/lib/`. The test suite fails if they disagree, so you will know.
+4. Bump `Last reviewed`
+5. If it is a policy change, log it in the [decision log](04-team/decision-log.md)
+6. Follow the [SOP writing standard](04-team/sop-writing-standard.md)
 
 **An SOP not followed twice is wrong.** Fix the SOP, not the person.
+
+```bash
+python3 08-automation/lib/tests/run_all.py     # 42 tests
+```
+
+A pre-commit hook runs them. It blocks a commit that breaks the OS, because six
+launchd agents execute this code unattended.
 
 ---
 
