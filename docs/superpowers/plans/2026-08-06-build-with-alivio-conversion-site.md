@@ -35,9 +35,11 @@
 - Create: `/Users/joel/alivio-studio/scripts/check-site.mjs`
 - Modify: `/Users/joel/alivio-studio/.gitignore`
 
-- [ ] **Step 1: Write the failing baseline test**
+- [ ] **Step 1: Write a green test for the blocker-detection engine**
 
-Test that every public HTML page has one title, one meta description, one canonical URL on `https://buildwithalivio.com`, one H1, a skip link, valid local navigation targets, and no known placeholders:
+Test the audit engine against temporary HTML fixtures: one clean page must return no findings, and one intentionally invalid fixture must report missing title/description/canonical/H1/skip link, broken local navigation, duplicate IDs, and the known placeholder patterns. The test suite verifies detection behavior without treating the current production mock-up as a passing fixture.
+
+The production-site audit checks that every public HTML page has one title, one meta description, one canonical URL on `https://buildwithalivio.com`, one H1, a skip link, valid local navigation targets, and no known placeholders:
 
 ```js
 const forbidden = [
@@ -50,7 +52,7 @@ const forbidden = [
 ];
 ```
 
-Expected initial result: FAIL on placeholder contact/legal links and missing canonical metadata.
+Expected fixture-test result: PASS. Expected production audit result: FAIL on placeholder contact/legal links and missing canonical metadata.
 
 - [ ] **Step 2: Add the test runner**
 
@@ -93,7 +95,7 @@ Add `.env`, `.env.local`, and `.env.*.local` to `.gitignore`, while keeping `.en
 
 - [ ] **Step 5: Implement the site scanner**
 
-`check-site.mjs` recursively scans public `.html`, `.xml`, `.txt`, `.js`, and `.css` files while excluding `.git`, `.vercel`, `node_modules`, and `tests`. It exits nonzero for broken local links, forbidden placeholder strings, duplicate page IDs, missing canonical metadata, or a sitemap URL without a corresponding page.
+`check-site.mjs` exports the pure audit helpers used by the tests and, when executed directly, recursively scans public `.html`, `.xml`, `.txt`, `.js`, and `.css` files while excluding `.git`, `.vercel`, `.worktrees`, `node_modules`, and `tests`. It exits nonzero for broken local links, forbidden placeholder strings, duplicate page IDs, missing canonical metadata, or a sitemap URL without a corresponding page.
 
 - [ ] **Step 6: Confirm the baseline fails for real blockers**
 
@@ -104,7 +106,7 @@ npm test
 npm run check:site
 ```
 
-Expected: FAIL with named current-site blockers, not syntax or test-discovery errors.
+Expected: `npm test` passes the audit-engine fixture tests. `npm run check:site` fails with named current-site blockers, not syntax or test-discovery errors.
 
 - [ ] **Step 7: Commit the test harness**
 
