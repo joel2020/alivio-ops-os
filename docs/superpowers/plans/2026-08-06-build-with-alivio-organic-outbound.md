@@ -222,6 +222,8 @@ Map estimate created → delivery → questions → financing/option clarificati
 
 Explain each calculator input, gross profit versus revenue, labor savings, payback, scenario ranges, double counting, and why Alivio validates inputs before a proposal.
 
+Add a cited implementation-pattern section using the approved home-services AI evidence register. Distinguish measured customer stories from product use-case descriptions; identify vendor-reported evidence in the visible copy; explain what each source does not prove; and never transfer an external percentage or dollar result into the visitor's calculator defaults.
+
 - [ ] **Step 7: Add contextual conversion paths**
 
 Every resource links to the relevant homepage/HVAC section, calculator, and Systems Review. Do not interrupt the article with multiple popups or a forced email gate.
@@ -276,7 +278,7 @@ Send only to subscribers or contacts with the appropriate relationship/permissio
 
 - [ ] **Step 5: Add content QA**
 
-Check primary-source support, date sensitivity, client permission, search intent, non-duplication, useful examples, accessible headings, metadata, internal links, and whether the CTA naturally follows the content.
+Check primary-source support, date sensitivity, client permission, search intent, non-duplication, useful examples, accessible headings, metadata, internal links, and whether the CTA naturally follows the content. For external case studies, also check evidence classification, visible vendor-reporting labels, baseline/measurement-period fidelity, limitation language, primary-source links, and separation from Alivio client proof.
 
 - [ ] **Step 6: Commit the editorial system**
 
@@ -296,7 +298,7 @@ git commit -m "docs: add Build With Alivio 12-week content system"
 
 - [ ] **Step 1: Define the evidence register**
 
-For every client claim require claim text, source, client approval status, permitted channel, expiration/review date, and owner. A blank or unapproved field means the claim cannot appear publicly or in a reusable sales deck.
+For every client claim require claim text, source, client approval status, permitted channel, expiration/review date, and owner. A blank or unapproved field means the claim cannot appear publicly or in a reusable sales deck. Maintain a separate external-evidence section for industry examples with operator, trade, implemented workflow, exact source wording, baseline and measurement period when supplied, evidence classification, original URL, last-verified date, caveat, permitted paraphrase, and owner. External evidence may support relevance or implementation patterns; it cannot be presented as Alivio performance evidence or as a forecast for a prospect.
 
 - [ ] **Step 2: Write the 10-slide narrative**
 

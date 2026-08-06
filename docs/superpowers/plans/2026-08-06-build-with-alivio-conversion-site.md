@@ -436,6 +436,8 @@ Days 22–30: compare baseline to live results and prioritize the next constrain
 
 List the exact offer ladder and explain fixed-price scoping. Use Bravo Mechanical as a factual build example with no quantified result. Use RLTRS and one of It’s Lit Neon/Elite Funding only for relevant delivery breadth, not home-service ROI proof.
 
+Add a visually separate “How home-service operators are using AI” evidence section based on the approved research register. Each item must identify the operator/trade, implemented workflow, original source, evidence classification, publication or review date, reported outcome only when the source provides one, and a concise limitation. Label vendor customer stories as “vendor-reported industry example.” Never imply that an external result belongs to Alivio, that Alivio implemented it, or that the same result is expected for the visitor. Link to the primary source, avoid third-party logos unless permission is documented, and omit any figure whose baseline, period, or wording cannot be verified.
+
 - [ ] **Step 8: Replace the global CTA and contact details**
 
 Use `hello@buildwithalivio.com`; remove the fake phone number until a real business line is supplied. Remove the demo form handlers from `assets/site.js` and load the new ES modules only where needed.
