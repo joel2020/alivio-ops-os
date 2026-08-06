@@ -1,4 +1,5 @@
 .DS_Store
+.worktrees/
 
 # Run logs — churn on every scheduled run, and carry client detail.
 08-automation/runs/
