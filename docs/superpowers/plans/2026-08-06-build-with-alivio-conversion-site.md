@@ -515,6 +515,9 @@ git commit -m "feat: add HVAC and ROI review funnel pages"
 - Modify: `/Users/joel/alivio-studio/work.html`
 - Modify: `/Users/joel/alivio-studio/about.html`
 - Modify: `/Users/joel/alivio-studio/index.html`
+- Modify: `/Users/joel/alivio-studio/hvac.html`
+- Modify: `/Users/joel/alivio-studio/systems-review.html`
+- Modify: `/Users/joel/alivio-studio/contact.html`
 - Modify: `/Users/joel/alivio-studio/assets/style.css`
 
 - [ ] **Step 1: Add failing assertions for shared claims and navigation**
@@ -539,7 +542,7 @@ Position Joel and Alivio Studio credibly for US home-service operators without i
 
 - [ ] **Step 6: Standardize global navigation and footer**
 
-Primary navigation: Services, HVAC, Work, Approach, About, Resources, Systems Review. Footer: `hello@buildwithalivio.com`, no fake phone, real legal links, and only verified social profiles.
+Primary navigation: Services, HVAC, Work, Approach, About, Systems Review. Add Resources to every primary navigation only when the resource hub exists; do not ship a broken or placeholder destination while the organic-resource task is pending. Footer: `hello@buildwithalivio.com`, no fake phone, real legal paths, and only verified social profiles. Task 8 owns the Privacy and Terms page targets.
 
 - [ ] **Step 7: Run the full checks**
 
@@ -553,7 +556,7 @@ Expected: no copy-contract or broken-link failures.
 - [ ] **Step 8: Commit the narrative alignment**
 
 ```bash
-git add index.html services.html approach.html work.html about.html assets/style.css tests/site-baseline.test.js
+git add index.html services.html approach.html work.html about.html hvac.html systems-review.html contact.html assets/style.css tests/site-baseline.test.js
 git commit -m "content: align Alivio site with the approved offer"
 ```
 
